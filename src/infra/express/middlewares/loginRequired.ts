@@ -1,0 +1,32 @@
+import {Request, Response, NextFunction} from "express"
+import jwt from "jsonwebtoken"
+
+export type JwtPayload = {
+    email: string
+    id: string
+}
+
+export const loginRequired = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    const {authorization} = req.headers
+    if(!authorization) {
+        res.status(401).json({
+            message: "Usuário não logado"
+        })
+        return
+    }
+    const token = authorization.split(' ')[1]
+    try{
+        const { email, id } = jwt.verify(token, process.env.JWT_PASS || '') as JwtPayload
+        const user: JwtPayload = {
+            email,
+            id
+        }
+        req.body.user = user
+        return next()
+    } catch(e) {
+        res.status(401).json({
+            message: e,
+        })
+        return
+    }
+}

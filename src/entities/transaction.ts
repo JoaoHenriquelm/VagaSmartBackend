@@ -19,14 +19,10 @@ export class Transaction {
   }
 
   static createTransaction(
-    userId: string,
     walletId: string,
     value: number,
     type: "CREDITO" | "DEBITO" | "ESTORNO"
   ): CreateTransaction {
-    if (!userId) {
-      return failure({ message: "É obrigatório a carteira ter um usuário", success: false});
-    }
     return success(
       new Transaction({
         _id: randomUUID().toString(),

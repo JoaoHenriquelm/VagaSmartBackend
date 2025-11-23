@@ -32,7 +32,7 @@ export class LoginUser implements LoginUserProtocol {
 			return failure({ message: "A senha está incorreta" });
 		}
 
-		const token = jwt.sign({ name: user.name, id: user.id }, process.env.JWT_PASS || "", {
+		const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_PASS || "", {
 			expiresIn: '30d'
 		});
 

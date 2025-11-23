@@ -43,4 +43,8 @@ export class Wallet {
   get balance(): number {
     return this.props.balance;
   }
+
+  set balance(value: number) {
+    this.props.balance = value;
+  }
 }

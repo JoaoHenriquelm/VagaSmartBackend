@@ -1,4 +1,3 @@
-import { Vehicle } from "../../entities/vehicle";
 import { Wallet } from "../../entities/wallet";
 import { prisma } from "../../services/prisma";
 import { WalletRepository } from "../wallet-repository";
