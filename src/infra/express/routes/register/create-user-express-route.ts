@@ -40,11 +40,12 @@ export class CreateUserRoute implements Route {
                 type
 			}: CreateUserRequestHandler = request.body;
 
+
 			const input: CreateUserRequestHandler = {
                 email: email,
                 name: name,
                 password: password,
-                type: type
+                type: type.toUpperCase() as "FUNCIONARIO" | "ALUNO" | "VISITANTE" | "OPERADOR"
 			};
 
             const output = await this.createUserService.execute(input)
