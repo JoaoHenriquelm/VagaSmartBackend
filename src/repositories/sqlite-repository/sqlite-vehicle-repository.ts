@@ -16,7 +16,6 @@ export class SqliteVehicle implements VehicleRepository {
             _id: searchVehicle.id,
             plate: searchVehicle.plate,
             userId: searchVehicle.userId,
-            active: searchVehicle.active,
             model: searchVehicle.model,
         });
         return vehicleEntity;
@@ -24,7 +23,7 @@ export class SqliteVehicle implements VehicleRepository {
     }
     
     async findVehiclePerPlate(plate: string): Promise<Vehicle | null> {
-            const searchVehicle = await prisma.vehicle.findUnique({
+        const searchVehicle = await prisma.vehicle.findUnique({
             where: {
                 plate: plate,
             },
@@ -36,7 +35,6 @@ export class SqliteVehicle implements VehicleRepository {
             _id: searchVehicle.id,
             plate: searchVehicle.plate,
             userId: searchVehicle.userId,
-            active: searchVehicle.active,
             model: searchVehicle.model,
         });
         return vehicleEntity;
@@ -49,9 +47,27 @@ export class SqliteVehicle implements VehicleRepository {
                 id: vehicle.id,
                 plate: vehicle.plate,
                 userId: vehicle.userId,
-                active: vehicle.active,
                 model: vehicle.model,
             },
         });
+    }
+
+    async findVehiclesPerUserId(userId: string): Promise<Vehicle[] | null> {
+        const vehicles = await prisma.vehicle.findMany({
+            where: {
+                userId: userId,
+            },
+        });
+    
+        if (vehicles.length === 0) {
+            return null;
+        }
+    
+        return vehicles.map(vehicle => Vehicle.with({
+            _id: vehicle.id,
+            plate: vehicle.plate,
+            userId: vehicle.userId,
+            model: vehicle.model,
+        }));
     }
 }

@@ -6,7 +6,6 @@ export interface VehicleProps {
   plate: string;
   model: string
   userId: string;
-  active: boolean;
 }
 
 type CreateVehicle = Either<{ message: string, success: boolean }, Vehicle>;
@@ -21,13 +20,12 @@ export class Vehicle {
   static createVehicle(
     plate: string,
     userId: string,
-    active: boolean,
     model: string
   ): CreateVehicle {
     if (!userId) {
       return failure({ message: "É obrigatório o veículo ter um usuário", success: false });
     }
-    if (!plate || !active) {
+    if (!plate) {
       return failure({ message: "Preencha todos os campos obrigatórios", success: false });
     }
     return success(
@@ -36,7 +34,6 @@ export class Vehicle {
         plate: plate,
         userId: userId,
         model: model,
-        active: true,
       })
     );
   }
@@ -47,10 +44,6 @@ export class Vehicle {
 
   get plate(): string {
     return this.props.plate;
-  }
-
-  get active(): boolean {
-    return this.props.active;
   }
 
   get userId(): string {

@@ -5,7 +5,7 @@ export interface UserProps {
   _id: string;
   name: string;
   email: string;
-  type: "FUNCIONARIO" | "ALUNO" | "VISITANTE";
+  type: "FUNCIONARIO" | "ALUNO" | "VISITANTE" | "OPERADOR";
   hashPassword: string;
   active: boolean;
 }
@@ -22,15 +22,15 @@ export class User {
   static createUser(
     name: string,
     email: string,
-    type: "FUNCIONARIO" | "ALUNO" | "VISITANTE",
+    type: "FUNCIONARIO" | "ALUNO" | "VISITANTE" | "OPERADOR",
     hashPassword: string,
   ): CreateUser {
     if (!name || !email || !type || !hashPassword) {
       return failure({ message: "Preencha todos os campos obrigatórios", success: false });
     }
 
-    if(type !== "FUNCIONARIO" || "ALUNO" || "VISITANTE") {
-        return failure({ message: "O tipo de usuário não pode ser diferentes de FUNCIONARIO, ALUNO OU VISITANTE", success: false });
+    if(!["FUNCIONARIO", "ALUNO", "VISITANTE", "OPERADOR"].includes(type)) {
+        return failure({ message: "O tipo de usuário não pode ser diferente de FUNCIONARIO, ALUNO OU VISITANTE", success: false });
     }
 
     return success(
@@ -57,7 +57,7 @@ export class User {
     return this.props.email;
   }
 
-  get type(): "FUNCIONARIO" | "ALUNO" | "VISITANTE" {
+  get type(): "FUNCIONARIO" | "ALUNO" | "VISITANTE" | "OPERADOR" {
     return this.props.type;
   }
 

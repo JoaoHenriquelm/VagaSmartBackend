@@ -9,8 +9,7 @@ export interface CreateUserAndWalletRequest {
   name: string;
   password: string;
   email: string;
-  type: "FUNCIONARIO" | "ALUNO" | "VISITANTE";
-  active: boolean
+  type: "FUNCIONARIO" | "ALUNO" | "VISITANTE" | "OPERADOR";
 }
 
 export type CreateUserAndWalletResponse = Either<

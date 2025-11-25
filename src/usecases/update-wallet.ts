@@ -1,13 +1,12 @@
 import { Transaction } from "../entities/transaction";
-import { Wallet } from "../entities/wallet";
 import { Either, failure, success } from "../errors/either";
 import { TransactionRepository } from "../repositories/transaction-repository";
 import { WalletRepository } from "../repositories/wallet-repository";
 
-export type UpdateWalletsRequest = {
+export type UpdateWalletRequest = {
   value: number;
-  type: "CREDITO" | "DEBITO" | "ESTORNO";
-  walletId: string;
+  type: "CREDITO" | "DEBITO" | "ENTRADA";
+  userId: string;
 };
 
 export type UpdateWalletResponse = Either<
@@ -19,26 +18,27 @@ export type UpdateWalletResponse = Either<
 >;
 
 export interface UpdateWalletProtocol {
-  execute(request: UpdateWalletsRequest): Promise<UpdateWalletResponse>;
+  execute(request: UpdateWalletRequest): Promise<UpdateWalletResponse>;
 }
 
-export class UpdateWallets implements UpdateWalletProtocol {
+export class UpdateWallet implements UpdateWalletProtocol {
   constructor(
     private repositoryWallet: WalletRepository,
     private repositoryTransaction: TransactionRepository
   ) {}
 
-  async execute(request: UpdateWalletsRequest): Promise<UpdateWalletResponse> {
-    if (request.value < 0 || request.value === 0) {
+  async execute(request: UpdateWalletRequest): Promise<UpdateWalletResponse> {
+    if (request.value === 0) {
       return failure({
-        message: "O valor da transação não pode ser menor ou igual a zero",
+        message: "O valor da transação não pode ser igual a zero",
         success: false,
       });
     }
 
     const searchWallet = await this.repositoryWallet.findWalletPerUserId(
-      request.walletId
+      request.userId
     );
+
     if (!searchWallet) {
       return failure({
         message: "Carteira não encontrada para o usuário informado",
@@ -46,8 +46,15 @@ export class UpdateWallets implements UpdateWalletProtocol {
       });
     }
 
+    if(searchWallet.balance < 0) {
+      return failure({
+        message: "Saldo insuficiente na carteira para realizar a transação",
+        success: false,
+      });
+    }
+
     const transaction = Transaction.createTransaction(
-      request.walletId,
+      searchWallet.id,
       request.value,
       request.type
     );

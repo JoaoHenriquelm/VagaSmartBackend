@@ -22,7 +22,7 @@ CREATE TABLE "Transaction" (
     "walletId" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "value" REAL NOT NULL,
-    "timestamp" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "timestamp" REAL NOT NULL,
     CONSTRAINT "Transaction_walletId_fkey" FOREIGN KEY ("walletId") REFERENCES "Wallet" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -32,7 +32,6 @@ CREATE TABLE "Vehicle" (
     "userId" TEXT NOT NULL,
     "plate" TEXT NOT NULL,
     "model" TEXT NOT NULL,
-    "active" BOOLEAN NOT NULL DEFAULT true,
     CONSTRAINT "Vehicle_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -46,6 +45,7 @@ CREATE TABLE "GateEvent" (
     "authorized" BOOLEAN,
     "operatorId" TEXT,
     "reason" TEXT,
+    "active" BOOLEAN NOT NULL,
     CONSTRAINT "GateEvent_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "GateEvent_vehicleId_fkey" FOREIGN KEY ("vehicleId") REFERENCES "Vehicle" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "GateEvent_operatorId_fkey" FOREIGN KEY ("operatorId") REFERENCES "User" ("id") ON DELETE SET NULL ON UPDATE CASCADE

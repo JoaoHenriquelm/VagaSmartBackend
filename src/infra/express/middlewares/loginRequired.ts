@@ -21,12 +21,13 @@ export const loginRequired = async (req: Request, res: Response, next: NextFunct
             email,
             id
         }
+        req.body = req.body || {}
         req.body.user = user
         return next()
     } catch(e) {
         res.status(401).json({
             message: e,
         })
-        return
+        
     }
 }

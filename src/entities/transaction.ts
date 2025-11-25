@@ -4,7 +4,7 @@ import { Either, failure, success } from "../errors/either";
 export interface TransactionProps {
   _id: string;
   walletId: string;
-  type: "CREDITO" | "DEBITO" | "ESTORNO";
+  type: "CREDITO" | "DEBITO" | "ENTRADA";
   value: number;
   timestamp: number;
 }
@@ -21,7 +21,7 @@ export class Transaction {
   static createTransaction(
     walletId: string,
     value: number,
-    type: "CREDITO" | "DEBITO" | "ESTORNO"
+    type: "CREDITO" | "DEBITO" | "ENTRADA"
   ): CreateTransaction {
     return success(
       new Transaction({
@@ -50,7 +50,7 @@ export class Transaction {
     return this.props.value;
   }
 
-  get type(): "CREDITO" | "DEBITO" | "ESTORNO" {
+  get type(): "CREDITO" | "DEBITO" | "ENTRADA" {
     return this.props.type;
   }
 }

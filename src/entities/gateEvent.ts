@@ -10,6 +10,7 @@ export interface GateEventProps {
   authorized?: boolean;
   operatorId?: string;
   reason?: string;
+  active: boolean
 }
 
 type CreateGateEvent = Either<{ message: string; success: boolean }, GateEvent>;
@@ -29,12 +30,6 @@ export class GateEvent {
     operatorId?: string,
     reason?: string
   ): CreateGateEvent {
-    if (type === "MANUAL" && (!reason || !operatorId)) {
-      return failure({
-        message: "Liberações manuais devem ter motivo feito por um operador",
-        success: false,
-      });
-    }
 
     return success(
       new GateEvent({
@@ -46,6 +41,7 @@ export class GateEvent {
         userId: userId,
         authorized: type === "AUTO" ? true : authorized,
         timestamp: Date.now(),
+        active: true
       })
     );
   }
@@ -76,6 +72,10 @@ export class GateEvent {
   
   get authorized(): boolean | undefined {
     return this.props.authorized
+  }
+
+  get active(): boolean {
+    return this.props.active
   }
 
   set authorized(authorized: boolean) {

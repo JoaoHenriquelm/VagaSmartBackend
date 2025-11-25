@@ -1,11 +1,12 @@
 import { GateEvent } from "../../entities/gateEvent";
 import { prisma } from "../../services/prisma";
+import { UpdateGateEventRequest } from "../../usecases/update-gateEvent";
 import { GateEventRepository } from "../gateEvent-repository";
 
 export class SqliteGateEvent implements GateEventRepository {
   async findGateEventsPerUserId(userId: string): Promise<Array<GateEvent>> {
     const events = await prisma.gateEvent.findMany({
-      where: { userId: userId },
+      where: { userId: userId, active: true },
       orderBy: { timestamp: "desc" },
     });
 
@@ -19,6 +20,7 @@ export class SqliteGateEvent implements GateEventRepository {
         authorized: e.authorized ?? undefined,
         operatorId: e.operatorId ?? undefined,
         reason: e.reason ?? undefined,
+        active: e.active
       })
     );
   }
@@ -39,6 +41,7 @@ export class SqliteGateEvent implements GateEventRepository {
         authorized: e.authorized ?? undefined,
         operatorId: e.operatorId ?? undefined,
         reason: e.reason ?? undefined,
+        active: e.active
       })
     );
   }
@@ -53,17 +56,19 @@ export class SqliteGateEvent implements GateEventRepository {
         authorized: gateEvent.authorized,
         operatorId: gateEvent.operatorId,
         reason: gateEvent.reason,
+        active: gateEvent.active
       },
     });
   }
 
-  async update(gateEvent: GateEvent): Promise<void> {
+  async update(gateEvent: UpdateGateEventRequest): Promise<void> {
     await prisma.gateEvent.update({
       where: { id: gateEvent.id },
       data: {
         authorized: gateEvent.authorized,
         operatorId: gateEvent.operatorId,
         reason: gateEvent.reason,
+        active: gateEvent.active
       },
     });
   }

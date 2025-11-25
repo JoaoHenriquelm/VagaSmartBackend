@@ -1,11 +1,16 @@
-import { GateEvent } from "../entities/gateEvent";
 import { Either, failure, success } from "../errors/either";
 import { GateEventRepository } from "../repositories/gateEvent-repository";
 
 
-export type UpdateGateEventsRequest = GateEvent
+export type UpdateGateEventRequest = {
+  id: string
+  operatorId: string;
+  reason: string;
+  authorized: boolean;
+  active: boolean
+}
 
-export type UpdateGateEventsResponse = Either<
+export type UpdateGateEventResponse = Either<
   { message: string; success: boolean },
   {
     message: string;
@@ -13,27 +18,26 @@ export type UpdateGateEventsResponse = Either<
   }
 >;
 
-export interface UpdateGateEventsProtocol {
+export interface UpdateGateEventProtocol {
   execute(
-    request: UpdateGateEventsRequest
-  ): Promise<UpdateGateEventsResponse>;
+    request: UpdateGateEventRequest
+  ): Promise<UpdateGateEventResponse>;
 }
 
-export class UpdateGateEvents
-  implements UpdateGateEventsProtocol
+export class UpdateGateEvent
+  implements UpdateGateEventProtocol
 {
   constructor(
     private repositoryGateEvent: GateEventRepository
   ) {}
 
   async execute(
-    request: UpdateGateEventsRequest
-  ): Promise<UpdateGateEventsResponse> {
-    await this.repositoryGateEvent.update(request)
-
-    if(!request.operatorId || !request.reason || !request.authorized) {
+    request: UpdateGateEventRequest
+  ): Promise<UpdateGateEventResponse> {
+    if(!request.operatorId || !request.reason || request.active === undefined || request.active === null) {
       return failure({message: "O evento não foi atualizado", success: false})
     }
+    await this.repositoryGateEvent.update(request)
     return success({message: "O evento foi atualizado", success: true});
   }
 }

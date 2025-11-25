@@ -6,7 +6,7 @@ import { GateEventRepository } from "../repositories/gateEvent-repository";
 import { UserRepository } from "../repositories/user-repository";
 import { VehicleRepository } from "../repositories/vehicle-repository";
 
-export type ShowUnathorizedGateEventsResponse = Either<
+export type IndexUnathorizedGateEventsResponse = Either<
   { message: string },
   {
     gateEventInfo: Array<{
@@ -17,12 +17,12 @@ export type ShowUnathorizedGateEventsResponse = Either<
   }
 >;
 
-interface ShowUnathorizedGateEventsProtocol {
-  execute(): Promise<ShowUnathorizedGateEventsResponse>;
+interface IndexUnathorizedGateEventsProtocol {
+  execute(): Promise<IndexUnathorizedGateEventsResponse>;
 }
 
-export class ShowUnathorizedGateEvents
-  implements ShowUnathorizedGateEventsProtocol
+export class IndexUnathorizedGateEvents
+  implements IndexUnathorizedGateEventsProtocol
 {
   constructor(
     private repositoryUser: UserRepository,
@@ -30,7 +30,7 @@ export class ShowUnathorizedGateEvents
     private repositoryVehicle: VehicleRepository
   ) {}
 
-  async execute(): Promise<ShowUnathorizedGateEventsResponse> {
+  async execute(): Promise<IndexUnathorizedGateEventsResponse> {
     const searchGateEvents =
       await this.repositoryGateEvent.findGateEventsUnathorized();
 

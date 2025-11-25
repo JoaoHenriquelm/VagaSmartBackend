@@ -6,7 +6,6 @@ export interface CreateGateEventRequest {
   idUser: string
   idVehicle: string
   type: "AUTO" | "MANUAL";
-  timestamp: number
   authorized?: boolean
   operatorId?: string;
   reason?: string;
