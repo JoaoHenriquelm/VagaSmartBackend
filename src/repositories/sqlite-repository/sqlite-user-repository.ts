@@ -18,7 +18,7 @@ export class SqliteUser implements UserRepository {
       email: searchUser.email,
       name: searchUser.name,
       hashPassword: searchUser.hashPassword,
-      type: searchUser.type as "FUNCIONARIO" | "ALUNO" | "VISITANTE",
+      type: searchUser.type as "FUNCIONARIO" | "ALUNO" | "VISITANTE" | "OPERADOR",
     });
     return userEntity;
   }

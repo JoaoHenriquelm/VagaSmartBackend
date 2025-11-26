@@ -31,9 +31,9 @@ export class LoginUserRoute implements Route {
 
 	getHandler(): (request: Request, response: Response) => Promise<void> {
 		return async (request: Request, response: Response) => {
-			const { email, password }: LoginUserRequestHandler = request.body;
+			const { email, password, type }: LoginUserRequestHandler = request.body;
 
-			const input: LoginUserRequestHandler = { email, password };
+			const input: LoginUserRequestHandler = { email, password, type };
 
 			const output = await this.loginUserService.execute(input);
 

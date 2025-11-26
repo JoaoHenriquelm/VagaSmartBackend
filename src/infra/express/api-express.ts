@@ -2,6 +2,7 @@ import { Api } from "../api";
 import express, { Express } from "express";
 import { Route } from "./routes/route";
 import { loginRequired } from "./middlewares/loginRequired";
+import cors from "cors";
 
 export class ApiExpress implements Api {
 	private app: Express;
@@ -19,6 +20,12 @@ export class ApiExpress implements Api {
 	private middlewares(): void {
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
+		this.app.use(cors({
+			origin: "*", 
+			methods: ["GET", "POST", "PUT", "DELETE"],
+			allowedHeaders: ["Content-Type", "Authorization"],
+			credentials: true,
+		}));
 	}
 
     addRoutes(routes: Route[]) {

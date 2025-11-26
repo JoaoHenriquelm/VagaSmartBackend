@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 export interface LoginUserRequest {
 	email: string;
 	password: string;
+	type: "FUNCIONARIO" | "ALUNO" | "VISITANTE" | "OPERADOR",
 }
 
 export type LoginUserResponse = Either<{ message: string }, { token: string }>;
@@ -32,10 +33,10 @@ export class LoginUser implements LoginUserProtocol {
 			return failure({ message: "A senha está incorreta" });
 		}
 
-		const token = jwt.sign({ email: user.email, id: user.id }, process.env.JWT_PASS || "", {
+		const token = jwt.sign({ email: user.email, id: user.id, type: user.type }, process.env.JWT_PASS || "", {
 			expiresIn: '30d'
 		});
 
-        return success({token})
+        return success({token, type: user.type});
 	}
 }
