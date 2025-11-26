@@ -34,9 +34,6 @@ export class UpdateGateEvent
   async execute(
     request: UpdateGateEventRequest
   ): Promise<UpdateGateEventResponse> {
-    if(!request.operatorId || !request.reason || request.active === undefined || request.active === null) {
-      return failure({message: "O evento não foi atualizado", success: false})
-    }
     await this.repositoryGateEvent.update(request)
     return success({message: "O evento foi atualizado", success: true});
   }

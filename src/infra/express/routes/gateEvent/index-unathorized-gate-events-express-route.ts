@@ -15,10 +15,6 @@ export type IndexUnathorizedGateEventsResponseHandler = {
     }>;
   }
 
-export type IndexUnathorizedGateEventsRequestHandler = {
-    idUser: string
-}
-
 export class IndexUnathorizedGateEventsRoute implements Route {
     private constructor(
         private readonly path: string,
