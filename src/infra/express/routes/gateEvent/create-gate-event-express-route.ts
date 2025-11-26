@@ -42,18 +42,12 @@ export class CreateGateEventRoute implements Route {
             const {
                 idVehicle,
                 type,
-                authorized,
-                operatorId,
-                reason
             }: CreateGateEventRequestHandler = request.body;
 
             const input: CreateGateEventRequestHandler = {
                 idUser: id,
-                idVehicle,
-                type,
-                authorized,
-                operatorId,
-                reason
+                idVehicle: idVehicle,
+                type: type.toUpperCase() as "AUTO" | "MANUAL",
             };
 
             const output = await this.createUserService.execute(input)
